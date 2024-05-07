@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:calculations/variables/colors.dart';
+import 'package:calculations/variables/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MentalCalculation extends StatefulWidget {
   final MentalCalculationData mentalCalculationData;
@@ -54,6 +57,7 @@ class _MentalCalculationState extends State<MentalCalculation> {
 
     return GestureDetector(
       child: Scaffold(
+        backgroundColor: backgroundColor,
         body: Padding(
           padding: EdgeInsets.only(top: statusBarHeight),
           child: Center(
@@ -443,7 +447,7 @@ class _MentalCalculationState extends State<MentalCalculation> {
     });
   }
 
-  void checkAnswer(double userAnswer) {
+  void checkAnswer(double userAnswer) async {
     String answerStr = answer.toString();
 
     if (data.decimals != 0) {
@@ -455,9 +459,22 @@ class _MentalCalculationState extends State<MentalCalculation> {
 
     result = userAnswer == answer;
 
+    await saveResult();
+
     setState(() {
       gameState = GameState.result;
     });
+  }
+
+  Future<void> saveResult() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (result) {
+      prefs.setInt(Prefs_MentalCalcCorrectAnswers,
+          prefs.getInt(Prefs_MentalCalcCorrectAnswers)! + 1);
+    } else {
+      prefs.setInt(Prefs_MentalCalcWrongAnswers,
+          prefs.getInt(Prefs_MentalCalcWrongAnswers)! + 1);
+    }
   }
 
   // autoTimer

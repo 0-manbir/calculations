@@ -7,3 +7,5 @@ const String Prefs_RangeEnd = "maxnumber";
 const String Prefs_DecimalPlaces = "decimalplaces";
 const String Prefs_MulMax = "mulmax";
 const String Prefs_AutoTimer = "autotimer";
+const String Prefs_MentalCalcWrongAnswers = "wrong";
+const String Prefs_MentalCalcCorrectAnswers = "correct";

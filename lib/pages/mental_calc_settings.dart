@@ -1,5 +1,6 @@
 import 'package:calculations/pages/mental_calc.dart';
-import 'package:calculations/strings.dart';
+import 'package:calculations/variables/colors.dart';
+import 'package:calculations/variables/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +15,8 @@ class MentalCalculationSettings extends StatefulWidget {
 
 class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
   late SharedPreferences _prefs;
+
+  String correctAnswers = "", wrongAnswers = "";
 
   @override
   void initState() {
@@ -37,6 +40,7 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
     double statusBarHeight = MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: Padding(
         padding: EdgeInsets.only(top: statusBarHeight),
         child: SingleChildScrollView(
@@ -87,6 +91,33 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
                         },
                       ),
                       Expanded(child: Container()),
+                      Text(
+                        correctAnswers,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                          color: Colors.green[200],
+                        ),
+                      ),
+                      Container(width: 6),
+                      Text(
+                        "/",
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                          color: Colors.grey[200],
+                        ),
+                      ),
+                      Container(width: 6),
+                      Text(
+                        wrongAnswers,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                          color: Colors.red[200],
+                        ),
+                      ),
+                      Container(width: 24),
                     ],
                   ),
                 ),
@@ -270,7 +301,7 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
                                         isDense: true,
                                         counterText: "",
                                         border: InputBorder.none,
-                                        hintText: ".........",
+                                        hintText: "",
                                         hintStyle: TextStyle(
                                           fontFamily: 'Inter',
                                           color: Colors.grey[400],
@@ -324,7 +355,7 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
                                   isDense: true,
                                   counterText: "",
                                   border: InputBorder.none,
-                                  hintText: ".........",
+                                  hintText: "",
                                   hintStyle: TextStyle(
                                     fontFamily: 'Inter',
                                     color: Colors.grey[400],
@@ -375,7 +406,7 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
                                   isDense: true,
                                   counterText: "",
                                   border: InputBorder.none,
-                                  hintText: ".........",
+                                  hintText: "",
                                   hintStyle: TextStyle(
                                     fontFamily: 'Inter',
                                     color: Colors.grey[400],
@@ -426,7 +457,7 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
                                   isDense: true,
                                   counterText: "",
                                   border: InputBorder.none,
-                                  hintText: ".........",
+                                  hintText: "",
                                   hintStyle: TextStyle(
                                     fontFamily: 'Inter',
                                     color: Colors.grey[400],
@@ -467,7 +498,7 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
                                   isDense: true,
                                   counterText: "",
                                   border: InputBorder.none,
-                                  hintText: ".........",
+                                  hintText: "",
                                   hintStyle: TextStyle(
                                     fontFamily: 'Inter',
                                     color: Colors.grey[400],
@@ -564,7 +595,7 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
                                         isDense: true,
                                         counterText: "",
                                         border: InputBorder.none,
-                                        hintText: ".........",
+                                        hintText: "",
                                         hintStyle: TextStyle(
                                           fontFamily: 'Inter',
                                           color: Colors.grey[400],
@@ -663,6 +694,9 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
       decimalsController.text = _prefs.getInt(Prefs_DecimalPlaces)!.toString();
       timerController.text = _prefs.getInt(Prefs_AutoTimer)!.toString();
       mulMaxController.text = _prefs.getInt(Prefs_MulMax)!.toString();
+
+      correctAnswers = _prefs.getInt(Prefs_MentalCalcCorrectAnswers).toString();
+      wrongAnswers = _prefs.getInt(Prefs_MentalCalcWrongAnswers).toString();
     });
   }
 
@@ -685,6 +719,12 @@ class _MentalCalculationSettingsState extends State<MentalCalculationSettings> {
     }
     if (!_prefs.containsKey(Prefs_MulMax)) {
       _prefs.setInt(Prefs_MulMax, 10);
+    }
+    if (!_prefs.containsKey(Prefs_MentalCalcCorrectAnswers)) {
+      _prefs.setInt(Prefs_MentalCalcCorrectAnswers, 0);
+    }
+    if (!_prefs.containsKey(Prefs_MentalCalcWrongAnswers)) {
+      _prefs.setInt(Prefs_MentalCalcWrongAnswers, 0);
     }
   }
 }
