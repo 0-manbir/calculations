@@ -1,3 +1,4 @@
+import 'package:calculations/pages/doubles_settings.dart';
 import 'package:calculations/pages/mental_calc_settings.dart';
 import 'package:calculations/variables/colors.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   // pages
   final List<Page> pages = [
     Page(const MentalCalculationSettings(), 'mental calculator'),
+    Page(const DoublesSettings(), 'doubles'),
   ];
 
   @override
@@ -57,7 +59,11 @@ class MyApp extends StatelessWidget {
           itemCount: pages.length,
           itemBuilder: (context, index) {
             // columns---------------------------------
-            return getButton(context, index);
+            return Column(
+              children: [
+                getButton(context, index),
+              ],
+            );
           },
         ),
       ],
