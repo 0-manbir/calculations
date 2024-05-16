@@ -13,7 +13,7 @@ class Doubles extends StatefulWidget {
 }
 
 class _DoublesState extends State<Doubles> {
-  late int startNumber, startNumberReplay;
+  late int startNumber, startNumForReplay;
   bool gameFinished = false;
   int correctAnswers = 0;
 
@@ -27,7 +27,7 @@ class _DoublesState extends State<Doubles> {
   Widget build(BuildContext context) {
     // variables
     double statusBarHeight = MediaQuery.of(context).padding.top;
-    startNumberReplay = startNumber;
+    startNumForReplay = startNumber;
 
     return GestureDetector(
       child: Scaffold(
@@ -46,11 +46,9 @@ class _DoublesState extends State<Doubles> {
   }
 
   Widget childSelector(BuildContext buildContext) {
-    if (gameFinished) {
-      return gameFinishWidget(buildContext);
-    } else {
-      return gameWidget(buildContext);
-    }
+    return gameFinished
+        ? gameFinishWidget(buildContext)
+        : gameWidget(buildContext);
   }
 
   Widget gameWidget(BuildContext buildContext) {
@@ -92,10 +90,9 @@ class _DoublesState extends State<Doubles> {
               ),
             ),
             onChanged: (value) {
-              if (value.length == startNumber.toString().length) {
+              if (value.length == (startNumber * 2).toString().length) {
                 HapticFeedback.mediumImpact();
                 changeNumber();
-                answerText.text = "";
               }
             },
           ),
@@ -110,23 +107,31 @@ class _DoublesState extends State<Doubles> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
+          "Wrong!",
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 36,
+            color: Colors.red[300],
+          ),
+        ),
+        Container(height: 48),
+        Text(
           "You entered ${answerText.text}",
           style: TextStyle(
             fontFamily: 'Inter',
-            fontSize: 36,
+            fontSize: 28,
             color: Colors.grey[400],
           ),
         ),
-        Container(height: 24),
         Text(
-          "The correct answer was $startNumber}",
+          "The correct answer was ${startNumber * 2}",
           style: TextStyle(
             fontFamily: 'Inter',
-            fontSize: 36,
+            fontSize: 16,
             color: Colors.grey[400],
           ),
         ),
-        Container(height: 24),
+        Container(height: 136),
         GestureDetector(
           child: Container(
             decoration: BoxDecoration(
@@ -155,7 +160,7 @@ class _DoublesState extends State<Doubles> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return Doubles(number: startNumberReplay);
+                  return Doubles(number: startNumForReplay);
                 },
               ),
             );
@@ -194,10 +199,11 @@ class _DoublesState extends State<Doubles> {
       setState(() {
         startNumber *= 2;
         correctAnswers++;
+        answerText.text = "";
       });
     } else {
       setState(() {
-        gameFinished = false;
+        gameFinished = true;
       });
     }
   }

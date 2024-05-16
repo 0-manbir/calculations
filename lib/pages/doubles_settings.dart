@@ -2,8 +2,10 @@ import "dart:math";
 
 import "package:calculations/pages/doubles.dart";
 import "package:calculations/variables/colors.dart";
+import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:flutter/widgets.dart";
 
 class DoublesSettings extends StatefulWidget {
   const DoublesSettings({super.key});
@@ -27,6 +29,9 @@ class _DoublesSettingsState extends State<DoublesSettings> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     double statusBarHeight = MediaQuery.of(context).padding.top;
+
+    minNumberController.text = "2";
+    maxNumberController.text = "100";
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -129,105 +134,101 @@ class _DoublesSettingsState extends State<DoublesSettings> {
                           "-or-",
                           style: TextStyle(
                             fontFamily: 'Inter',
-                            fontSize: 16,
-                            color: Colors.grey[300],
+                            fontSize: 26,
+                            color: Colors.grey[400],
                           ),
                         ),
 
                         Container(height: 42),
 
                         // random number
-                        Container(
-                          width: screenWidth * 0.75,
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: minNumberController,
-                                  maxLines: 1,
-                                  keyboardType: TextInputType.number,
-                                  textInputAction: TextInputAction.done,
-                                  cursorColor: Colors.grey[500],
-                                  style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    color: Colors.grey[600],
-                                    fontSize: 16,
-                                  ),
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    counterText: "",
-                                    border: InputBorder.none,
-                                    hintText: "from...",
-                                    hintStyle: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Colors.grey[300],
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 64.0),
+                          child: TextField(
+                            controller: minNumberController,
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.done,
+                            cursorColor: Colors.grey[500],
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              color: Colors.grey[600],
+                              fontSize: 16,
+                            ),
+                            decoration: InputDecoration(
+                              isDense: true,
+                              counterText: "",
+                              border: InputBorder.none,
+                              hintText: "from...",
+                              hintStyle: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.grey[300],
+                                fontSize: 16,
                               ),
-                              Container(width: 15),
-                              Expanded(
-                                child: TextField(
-                                  controller: maxNumberController,
-                                  maxLines: 1,
-                                  keyboardType: TextInputType.number,
-                                  textInputAction: TextInputAction.done,
-                                  cursorColor: Colors.grey[500],
-                                  style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    color: Colors.grey[600],
-                                    fontSize: 16,
-                                  ),
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    counterText: "",
-                                    border: InputBorder.none,
-                                    hintText: "to...",
-                                    hintStyle: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Colors.grey[300],
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              // random number button
-                              GestureDetector(
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0,
-                                    vertical: 12.0,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[400],
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  child: Icon(
-                                    Icons.refresh_rounded,
-                                    color: Colors.grey[100],
-                                  ),
-                                ),
-                                onTap: () {
-                                  HapticFeedback.mediumImpact();
-
-                                  int min = int.parse(minNumberController.text);
-                                  int max = int.parse(maxNumberController.text);
-
-                                  number =
-                                      Random().nextInt(max - min + 1) + min;
-
-                                  start();
-                                },
-                              ),
-                            ],
+                            ),
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 64.0),
+                          child: TextField(
+                            controller: maxNumberController,
+                            maxLines: 1,
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.done,
+                            cursorColor: Colors.grey[500],
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              color: Colors.grey[600],
+                              fontSize: 16,
+                            ),
+                            decoration: InputDecoration(
+                              isDense: true,
+                              counterText: "",
+                              border: InputBorder.none,
+                              hintText: "to...",
+                              hintStyle: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.grey[300],
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        Container(height: 16),
+
+                        // random number button
+                        GestureDetector(
+                          child: Container(
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 12.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            child: Text(
+                              "random",
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 16,
+                                color: Colors.grey[100],
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+
+                            int min = int.parse(minNumberController.text);
+                            int max = int.parse(maxNumberController.text);
+
+                            number = Random().nextInt(max - min + 1) + min;
+
+                            start();
+                          },
                         ),
                       ],
                     ),
